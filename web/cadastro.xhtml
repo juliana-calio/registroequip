@@ -1,0 +1,58 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+        <title>Cadastros</title>
+    </h:head>
+    <h:body>
+        <h:form>
+
+            <p:layout fullPage="true">
+
+               
+
+                <p:layoutUnit position="west" size="160" header="Links Rápidos" style="text-align: center" resizable="true"  >  
+
+                    <p:commandButton  value="Início" id="btnVoltar"  style="width: 140px; position: relative; top: 5px"  action="/index" immediate="true"/>
+                    <br/>
+                    
+                </p:layoutUnit> 
+
+
+
+                <p:layoutUnit position="center">
+
+                    <p:tabView dynamic="true" cache="true" id="tabV" style=" border-color: transparent">
+                        
+                        
+                        
+                        <p:tab title="Equipamento">
+                            
+                            <h:panelGrid columns="2">
+                                <p:commandButton icon="ui-icon-disk"  actionListener="#{equipamentoController.cadastrarEquipamentos()}" 
+                                                     style="width: 250px; height: 25px; font-size: small" title="Cadastrar equipamentos"
+                                                     value="Cadastrar equipamentos por txt" immediate="true">
+                                    </p:commandButton>
+
+                                    
+                                </h:panelGrid>
+                            
+
+                        </p:tab>
+                        
+
+                    </p:tabView>
+
+                </p:layoutUnit>
+                <p:layoutUnit id="southPanel" position="south" style="text-align:center" size="100"  resizable="true" closable="true" collapsible="true">  
+                    <p:messages id="msgs" showDetail="true" showSummary="false"/>   
+                </p:layoutUnit>
+
+            </p:layout>
+        </h:form>
+    </h:body>
+</html>
+

@@ -1,0 +1,199 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <f:view contentType="text/html">
+        <h:head>
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title>Controle de Equipamentos</title>
+            </f:facet>
+        </h:head>
+
+        <h:body>
+
+            <h:form>
+                <p:layout fullPage="true">
+
+
+                 <!--<p:layoutUnit position="west" size="175" collapsible="true">
+                        <p:commandButton  value="Cadastros" id="btnCadastro"  style="width: 140px; position: relative; top: 5px"  action="/cadastro" immediate="true"/>
+                        <br/>
+                    </p:layoutUnit> -->
+
+                    <p:layoutUnit position="center">
+                        <h:panelGrid columns="1" cellpadding="10">
+
+                            <h:panelGrid columns="2" cellpadding="10">
+
+                                <p:panel header="Buscar equipamento" style="width: 350px" 
+                                         toggleable="true" toggleSpeed="550">
+                                    <h:panelGrid columns="2" id="buscarEquipamento">
+
+
+                                        <h:outputText value="N. Ativo: "/>
+                                        <h:inputText value="#{equipamentoController.ativo}"/>
+
+                                    </h:panelGrid>
+                                    <p:separator/>
+                                    <p:commandButton style="width: 97px; height: 30px; font-size: small; position: relative; "  
+                                                     ajax="true"  value="Buscar" actionListener="#{equipamentoController.buscarEquipamento()}"
+                                                     icon="ui-icon-search" update="informacoes, buscarEquipamento, registroTable"> 
+                                    </p:commandButton>
+
+                                </p:panel>
+
+                                <p:panel header="Informações do Equipamento" style="width: 550px" 
+                                         toggleable="true" toggleSpeed="550" id="informacoes">
+                                    <h:panelGrid columns="2" id="informacaoEquipamento">
+
+                                        
+                                        
+                                        <h:outputLabel for="ajax" value="Posto:" />
+                                        <p:inplace id="ajax" editor="true">
+                                            <p:inputText value="#{equipamentoController.equipamento.posto}"  label="text" />
+                                        </p:inplace>
+
+                                        <h:outputText value="Nome: "/>
+                                        <h:outputText value="#{equipamentoController.equipamento.nome}"/>
+
+                                        <h:outputText value="N. Ativo: "/>
+                                        <h:outputText value="#{equipamentoController.equipamento.numAtivo}"/>
+
+                                    </h:panelGrid>
+                                    <p:separator/>
+
+                                    <h:panelGrid columns="2" cellpadding="10">
+                                        <p:commandButton style="width: 95px;height: 30px; font-size: small"
+                                                         value="Editar" action="#{equipamentoController.editar()}"
+                                                          immediate="true" 
+                                                         update="informacoes" icon="ui-icon-pencil"/>
+
+                                        <p:commandButton style="width: 95px;height: 30px; font-size: small"
+                                                         value="Deletar" action="#{equipamentoController.delete()}" immediate="true" 
+                                                         update="informacoes, registroTable" icon="ui-icon-trash"/>
+                                    </h:panelGrid>
+
+
+                                </p:panel>
+
+
+                            </h:panelGrid>
+
+
+
+                            <p:dataTable var="registro" value="#{equipamentoController.registros}" paginator="true" rows="5"
+                                         paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                                         rowsPerPageTemplate="5,10,15" 
+                                         paginatorPosition="bottom"
+                                         id="registroTable"  filteredValue="#{equipamentoController.registrosFiltrados}"
+                                         widgetVar="registroTabela" 
+                                         liveResize="true">
+                                
+                                <f:facet name="header">
+                                    Procedimentos Realizados
+                                </f:facet>
+
+                                <p:column headerText="Tipo" filterBy="#{registro.tipo}" filterMatchMode="equals"
+                                          style="width: 12%">
+                                    <f:facet name="filter" >
+                                        <p:selectOneButton onchange="PF('registroTabela').filter()" style="font-size: xx-small" >
+                                            
+                                            <f:selectItem itemLabel="P" itemValue="Preventiva" />
+                                            <f:selectItem itemLabel="Ca" itemValue="Calibracao" />
+                                            <f:selectItem itemLabel="Co" itemValue="Corretiva" />
+                                            <f:selectItem itemLabel="Ch" itemValue="Chamado" />
+                                            <f:selectItem itemLabel="Todos" itemValue="" />
+                                        </p:selectOneButton>
+                                    </f:facet> 
+                                    <h:outputText value="#{registro.tipo}" />
+                                </p:column>
+                                
+                                <p:column headerText="Numero" style="width: 10%">
+                                    <h:outputText value="#{registro.numero}" />
+                                </p:column>
+
+                                
+
+                                <p:column headerText="Realizacao" sortBy="#{registro.dataRealizacao}" 
+                                          filterBy="#{registro.dataRealizacao}" filterMatchMode="equals" 
+                                          style="width: 10%">
+
+                                    <f:facet name="filter">
+                                        <p:calendar onclick="PF('registroTabela').filter()"  size="7"/>  
+                                    </f:facet>
+                                    <h:outputText value="#{registro.dataRealizacao}">
+                                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                    </h:outputText>
+                                </p:column>
+                                
+                                <p:column headerText="Vencimento" sortBy="#{registro.dataVencimento}" 
+                                          filterBy="#{registro.dataVencimento}" filterMatchMode="equals" 
+                                          style="width: 10%">
+
+                                    <f:facet name="filter">
+                                        <p:calendar onclick="PF('registroTabela').filter()"  size="7"/>  
+                                    </f:facet>
+                                    <h:outputText value="#{registro.dataVencimento}">
+                                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                    </h:outputText>
+                                </p:column>
+
+                               <p:column headerText="Posto" style="width: 10%">
+                                    <h:outputText value="#{registro.local}" />
+                                </p:column>
+
+                                <p:column headerText="Procedimentos" >
+                                    <h:outputText value="#{registro.descricao}" />
+                                </p:column>
+
+                                
+                            </p:dataTable>
+
+
+                            <p:panel header="Cadastrar Novo procedimento"  >
+                            <h:panelGrid columns="2" id="criarRegistro">
+
+                                
+                                    <p:outputLabel value="Tipo:" />
+                                    <p:selectOneRadio id="console" value="#{equipamentoController.registro.tipo}">
+                                        <f:selectItem itemLabel="Preventiva" itemValue="Preventiva" />
+                                        <f:selectItem itemLabel="Calibracao" itemValue="Calibracao" />
+                                        <f:selectItem itemLabel="Corretiva" itemValue="Corretiva" />
+                                        <f:selectItem itemLabel="Chamado" itemValue="Chamado" />
+                                    </p:selectOneRadio>
+                                    
+                                    <h:outputText value="Numero: " />
+                                    <p:inputText value="#{equipamentoController.registro.numero}"/>
+
+                                <p:outputLabel value="Data Realização:" />
+                                    <p:calendar id="popup" value="#{equipamentoController.registro.dataRealizacao}" pattern="dd/MM/yyyy"/>
+
+                                <h:outputText value="Procedimentos: "/> 
+                                <p:inputTextarea rows="6" cols="33" value="#{equipamentoController.registro.descricao}" />
+
+                            </h:panelGrid>
+                            <p:separator/>
+                            <p:commandButton style="width: 97px; height: 30px; font-size: small; position: relative; "  
+                                             ajax="true"  value="Salvar" actionListener="#{equipamentoController.cadastrarRegistro()}"
+                                             update="@(form:msgs),registroTable,criarRegistro, console" icon="ui-icon-disk"> 
+                            </p:commandButton>
+
+                        </p:panel>
+
+
+                        </h:panelGrid>
+                    </p:layoutUnit>
+
+                </p:layout>
+            </h:form>
+
+
+        </h:body>
+
+    </f:view>
+</html>
+

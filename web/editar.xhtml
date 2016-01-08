@@ -1,0 +1,122 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <f:view contentType="text/html">
+        <h:head>
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title>Controle de Equipamentos</title>
+            </f:facet>
+        </h:head>
+
+        <h:body>
+
+            <h:form>
+                <p:layout fullPage="true">
+
+
+                    <p:layoutUnit position="west" size="175" collapsible="true">
+                        <p:commandButton  value="Cadastros" id="btnCadastro"  style="width: 140px; position: relative; top: 5px"  action="/cadastro" immediate="true"/>
+                        <br/>
+                    </p:layoutUnit>
+
+                    <p:layoutUnit position="center">
+                        <h:panelGrid columns="1" cellpadding="10">
+
+                            <h:panelGrid columns="2" cellpadding="10">
+
+                                <p:panel header="Buscar equipamento" style="width: 350px" 
+                                         toggleable="true" toggleSpeed="550">
+                                    <h:panelGrid columns="2" id="buscarEquipamento">
+
+
+                                        <h:outputText value="N. Ativo: "/>
+                                        <h:inputText value="#{equipamentoController.ativo}"/>
+
+                                    </h:panelGrid>
+                                    <p:separator/>
+                                    <p:commandButton style="width: 97px; height: 30px; font-size: small; position: relative; "  
+                                                     ajax="true"  value="Buscar" actionListener="#{equipamentoController.buscarEquipamento()}"
+                                                     icon="ui-icon-search" update="informacoes, buscarEquipamento"> 
+                                    </p:commandButton>
+
+                                </p:panel>
+
+                                <p:panel header="Informações do Equipamento" style="width: 550px" 
+                                         toggleable="true" toggleSpeed="550" id="informacoes">
+                                    <h:panelGrid columns="2" id="informacaoEquipamento">
+
+                                        <h:outputText value="Posto: "/>
+                                        <h:outputText value="#{equipamentoController.equipamento.posto}"/>
+
+                                        <h:outputText value="Nome: "/>
+                                        <h:outputText value="#{equipamentoController.equipamento.nome}"/>
+
+                                        <h:outputText value="N. Ativo: "/>
+                                        <h:outputText value="#{equipamentoController.equipamento.numAtivo}"/>
+
+                                    </h:panelGrid>
+                                    <p:separator/>
+
+                                    <h:panelGrid columns="2" cellpadding="10">
+                                        <p:commandButton style="width: 95px;height: 30px; font-size: small"
+                                                          value="Editar" immediate="true" 
+                                                         update="" icon="ui-icon-pencil"/>
+
+                                        <p:commandButton style="width: 95px;height: 30px; font-size: small"
+                                                         value="Deletar" immediate="true" 
+                                                         update="" icon="ui-icon-trash"/>
+                                    </h:panelGrid>
+
+
+                                </p:panel>
+
+
+                            </h:panelGrid>
+
+
+
+                            <p:dataTable var="registro" value="#{equipamentoController.registros}" paginator="true" rows="5"
+                                         paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                                         rowsPerPageTemplate="5,10,15" 
+                                         id="registroTable"  >
+
+                                <p:column headerText="Tipo" >
+                                    <h:outputText value="#{registro.tipo}" />
+                                </p:column>
+
+                                <p:column headerText="Realizacao" >
+                                    <h:outputText value="#{registro.dataRealizacao}">
+                                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column headerText="Vencimento" >
+                                    <h:outputText value="#{registro.dataVencimento}" />
+                                </p:column>
+
+                                <p:column headerText="Procedimentos" >
+                                    <h:outputText value="#{registro.descricao}" />
+                                </p:column>
+
+                            </p:dataTable>
+
+
+
+
+                        </h:panelGrid>
+                    </p:layoutUnit>
+
+                </p:layout>
+            </h:form>
+
+
+        </h:body>
+
+    </f:view>
+</html>
+

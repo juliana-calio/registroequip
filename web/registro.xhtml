@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <f:view contentType="text/html">
+        <h:head>
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title>Registros do Equipamento</title>
+            </f:facet>
+        </h:head>
+
+        <h:body>
+
+            <h:form>
+                <p:layout fullPage="true">
+
+                   
+
+                    
+
+
+                    <p:layoutUnit position="center">
+                        <h:panelGrid columns="1" cellpadding="10">
+
+                            <p:commandButton  value="Voltar" id="btnVoltar"  style="width: 140px; position: relative; top: 5px"  action="/index" immediate="true"/>
+                        <br/>
+                            
+                            <p:dataTable var="registro" value="#{equipamentoController.regDataModel}" paginator="true" rows="5"
+                                         paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                                         rowsPerPageTemplate="5,10,15" 
+                                         selectionMode="single" 
+                                         selection="#{equipamentoController.registro}" 
+                                         id="registroTable" 
+                                         lazy="true"   rowKey="#{registro.ID}">
+
+                                <p:column headerText="Tipo" >
+                                    <h:outputText value="#{registro.tipo}" />
+                                </p:column>
+                                
+                                <p:column headerText="Realizacao" >
+                                    <h:outputText value="#{registro.dataRealizacao}">
+                                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                    </h:outputText>
+                                </p:column>
+                                
+                                <p:column headerText="Vencimento" >
+                                    <h:outputText value="#{registro.dataVencimento}" />
+                                </p:column>
+                                
+                                <p:column headerText="Procedimentos" >
+                                    <h:outputText value="#{registro.descricao}" />
+                                </p:column>
+
+                            </p:dataTable>
+                            
+                        <p:panel header="Cadastrar Novo registro"  >
+                            <h:panelGrid columns="2" id="criarRegistro">
+
+                                
+                                    <p:outputLabel value="Tipo:" />
+                                    <p:selectOneRadio id="console" value="#{equipamentoController.registro.tipo}">
+                                        <f:selectItem itemLabel="Preventiva" itemValue="Preventiva" />
+                                        <f:selectItem itemLabel="Calibracao" itemValue="Calibracao" />
+                                    </p:selectOneRadio>
+
+                                <p:outputLabel value="Data Realização:" />
+                                    <p:calendar id="popup" value="#{equipamentoController.registro.dataRealizacao}" pattern="dd/MM/yyyy"/>
+
+                                <h:outputText value="Descricao: "/>
+                                <h:inputText value="#{equipamentoController.registro.descricao}" size="100"/>
+
+                            </h:panelGrid>
+                            <p:separator/>
+                            <p:commandButton style="width: 97px; height: 30px; font-size: small; position: relative; "  
+                                             ajax="true"  value="Salvar" actionListener="#{equipamentoController.cadastrarRegistro()}"
+                                             update="@(form:msgs),registroTable,criarRegistro, console" icon="ui-icon-disk"> 
+                            </p:commandButton>
+
+                        </p:panel>
+
+
+
+
+                        </h:panelGrid>
+                    </p:layoutUnit>
+
+                </p:layout>
+            </h:form>
+
+
+        </h:body>
+
+    </f:view>
+</html>
+
